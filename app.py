@@ -1,8 +1,12 @@
 import sqlite3
 import os
 
-def init_database():
-    """Sätter upp databasen och skapar tabellen 'users' om den saknas"""
+def init_database(silent=False):
+    """Sätter upp databasen och skapar tabellen 'users' om den saknas
+    
+    Args:
+        silent (bool): Om True, skriv inte ut meddelanden (användbart vid testning)
+    """
     db_path = os.getenv("DATABASE_PATH", "/data/test_users.db")
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -31,9 +35,11 @@ def init_database():
             "INSERT INTO users (name, email) VALUES (?, ?)",
             initial_users
         )
-        print("Databasen har initierats med testanvändare.")
+        if not silent:
+            print("Databasen har initierats med testanvändare.")
     else:
-        print(f"Det finns redan {total_users} användare i databasen.")
+        if not silent:
+            print(f"Det finns redan {total_users} användare i databasen.")
 
     conn.commit()
     conn.close()
@@ -55,8 +61,12 @@ def display_users():
     conn.close()
 
 
-def clear_test_data():
-    """GDPR: Tar bort samtliga användare från tabellen"""
+def clear_test_data(silent=False):
+    """GDPR: Tar bort samtliga användare från tabellen
+    
+    Args:
+        silent (bool): Om True, skriv inte ut meddelanden
+    """
     db_path = os.getenv("DATABASE_PATH", "/data/test_users.db")
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -65,11 +75,16 @@ def clear_test_data():
     conn.commit()
     conn.close()
 
-    print("All testdata har raderats (GDPR-anpassat).")
+    if not silent:
+        print("All testdata har raderats (GDPR-anpassat).")
 
 
-def anonymize_data():
-    """GDPR: Anonymiserar både namn och e-post"""
+def anonymize_data(silent=False):
+    """GDPR: Anonymiserar både namn och e-post
+    
+    Args:
+        silent (bool): Om True, skriv inte ut meddelanden
+    """
     db_path = os.getenv("DATABASE_PATH", "/data/test_users.db")
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
@@ -83,10 +98,12 @@ def anonymize_data():
     conn.commit()
     conn.close()
 
-    print("Alla namn och e-postadresser har anonymiserats (GDPR-anpassat).")
+    if not silent:
+        print("Alla namn och e-postadresser har anonymiserats (GDPR-anpassat).")
 
 
 if __name__ == "__main__":
+    # När filen körs direkt, visa utskrifter
     init_database()
     display_users()
 
@@ -96,6 +113,3 @@ if __name__ == "__main__":
             pass
     except KeyboardInterrupt:
         print("\nStänger ner...")
-
-
-##
