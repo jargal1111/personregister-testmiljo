@@ -9,7 +9,7 @@ Ett enkelt system för att hantera testdata på ett GDPR-kompatibelt sätt.
 - Rensa all testdata (GDPR åtgärd 1)
 - Anonymisera användardata (GDPR åtgärd 2)
 
-## Installation och körning
+## Installation och körning!!!
 
 ### Förutsättningar
 - Docker och Docker Compose
